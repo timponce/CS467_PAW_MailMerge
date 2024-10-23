@@ -25,11 +25,17 @@ const App = () => {
 
       {/* Divider to show available column headers from CSV*/}
       {headers.length > 0 && (
-        <div style={{ marginTop: "20px", border: "1px solid #ccc", padding: "10px" }}>
+        <div
+          style={{
+            marginTop: "20px",
+            border: "1px solid #ccc",
+            padding: "10px",
+          }}
+        >
           <h3>Available CSV Headers for your MailMerge Template:</h3>
           <ul>
             {headers.map((header, index) => (
-              <li key={index}>{`{${header}}`}</li>
+              <li key={index}>{`${header}`}</li>
             ))}
           </ul>
         </div>
