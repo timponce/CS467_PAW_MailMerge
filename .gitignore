@@ -71,7 +71,6 @@ coverage/
 
 # Ignore gatsby files
 .cache/
-public/
 
 # Ignore storybook files
 .storybook-out/

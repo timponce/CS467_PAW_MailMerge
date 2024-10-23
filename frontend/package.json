@@ -9,7 +9,14 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "express": "^4.21.1",
+    "open": "^10.1.0",
+    "papaparse": "^5.4.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "nodemon": "^3.1.7"
   },
   "scripts": {
     "start": "react-scripts start",
