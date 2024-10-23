@@ -2,6 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react';
 import Header from './components/Header';
+import Footer from './components/Footer';
+import FileUpload from './components/FileUpload';
+import RecipientsList from './components/RecipientsList';
+import TemplatesList from './components/TemplatesList';
+import TemplateEditor from './components/TemplateEditor';
+import EmailGenerationButton from './components/EmailGenerationButton';
 
 function App() {
 
@@ -17,22 +23,16 @@ function App() {
 
   const selectedTemplate = templates.find((template) => template.id === selectedTemplateId);
 
-  const handleEmailGeneration = () => {
-
-    recipients.forEach((recipient)=>{
-      let emailcontent = selectedTemplate.content;
-      Object.keys(recipient).forEach((csvColumn) => {
-        const placeholder = `{{${csvColumn}}}`
-        emailcontent = emailcontent.replace(new RegExp(placeholder, 'g'), recipient[csvColumn]);
-      });
-    })
-  }
-
   return (
     
     <div className="App">
       <Header></Header>
-      <header className="App-header">
+      <FileUpload></FileUpload>
+      <TemplatesList></TemplatesList>
+      <TemplateEditor></TemplateEditor>
+      <RecipientsList></RecipientsList>
+      <EmailGenerationButton></EmailGenerationButton>
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -45,7 +45,8 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
+      <Footer></Footer>
     </div>
   );
 }
