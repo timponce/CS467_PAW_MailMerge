@@ -1,4 +1,3 @@
-// src/components/CSVUploader.js
 import React, { useState } from "react";
 import Papa from "papaparse";
 
