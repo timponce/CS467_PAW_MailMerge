@@ -7,7 +7,8 @@ import FileUpload from './components/FileUpload';
 import RecipientsList from './components/RecipientsList';
 import TemplatesList from './components/TemplatesList';
 import TemplateEditor from './components/TemplateEditor';
-import EmailGenerationButton from './components/EmailGenerationButton';
+import GenerationButtons from './components/GenerationButtons';
+import EmailPreview from './components/EmailPreview';
 
 function App() {
 
@@ -28,10 +29,11 @@ function App() {
     <div className="App">
       <Header></Header>
       <FileUpload></FileUpload>
-      <TemplatesList></TemplatesList>
+      {/* <TemplatesList></TemplatesList> */}
       <TemplateEditor></TemplateEditor>
-      <RecipientsList></RecipientsList>
-      <EmailGenerationButton></EmailGenerationButton>
+      {/* <RecipientsList></RecipientsList> */}
+      <EmailPreview></EmailPreview>
+      <GenerationButtons></GenerationButtons>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -46,7 +48,7 @@ function App() {
           Learn React
         </a>
       </header> */}
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </div>
   );
 }
