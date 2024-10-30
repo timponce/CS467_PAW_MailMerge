@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CSVUploader from "./components/CSVUploader";
 import EmailTemplateEditor from "./components/EmailTemplateEditor";
 import EmailPreviewer from "./components/EmailPreviewer";
+import DownloadEmails from "./components/DownloadEmails";
 import Handlebars from "handlebars";
 
 const App = () => {
@@ -43,6 +44,9 @@ const App = () => {
       />
       <button onClick={generateEmails}>Generate Emails</button>
       <EmailPreviewer generatedEmails={generatedEmails} />
+      {generatedEmails.length > 0 && (
+        <DownloadEmails generatedEmails={generatedEmails} />
+      )}
     </div>
   );
 };
