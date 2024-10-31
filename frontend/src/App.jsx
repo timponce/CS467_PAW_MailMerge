@@ -28,7 +28,9 @@ const App = () => {
       return;
     }
 
-    const template = Handlebars.compile(emailTemplate);
+    // Replace `{variable}` with `{{variable}}` for Handlebars
+    const normalizedTemplate = emailTemplate.replace(/\{(\w+)\}/g, "{{$1}}");
+    const template = Handlebars.compile(normalizedTemplate);
     const emails = csvData.map((row) => template(row));
     setGeneratedEmails(emails);
   };
