@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CSVUploader from "./components/CSVUploader";
 import EmailTemplateEditor from "./components/EmailTemplateEditor";
 import EmailPreviewer from "./components/EmailPreviewer";
+import DownloadEmails from "./components/DownloadEmails";
 import Handlebars from "handlebars";
 
 const App = () => {
@@ -28,7 +29,9 @@ const App = () => {
       return;
     }
 
-    const template = Handlebars.compile(emailTemplate);
+    // Replace `{variable}` with `{{variable}}` for Handlebars
+    const normalizedTemplate = emailTemplate.replace(/\{(\w+)\}/g, "{{$1}}");
+    const template = Handlebars.compile(normalizedTemplate);
     const emails = csvData.map((row) => template(row));
     setGeneratedEmails(emails);
   };
@@ -43,6 +46,9 @@ const App = () => {
       />
       <button onClick={generateEmails}>Generate Emails</button>
       <EmailPreviewer generatedEmails={generatedEmails} />
+      {generatedEmails.length > 0 && (
+        <DownloadEmails generatedEmails={generatedEmails} />
+      )}
     </div>
   );
 };
