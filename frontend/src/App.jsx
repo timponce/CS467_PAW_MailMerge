@@ -1,56 +1,98 @@
-import React, { useState } from "react";
-import CSVUploader from "./components/CSVUploader";
-import EmailTemplateEditor from "./components/EmailTemplateEditor";
-import EmailPreviewer from "./components/EmailPreviewer";
-import DownloadEmails from "./components/DownloadEmails";
-import Handlebars from "handlebars";
+import logo from './logo.svg';
+import './App.css';
+import React, { useState } from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import FileUpload from './components/FileUpload';
+import RecipientsList from './components/RecipientsList';
+import TemplatesList from './components/TemplatesList';
+import TemplateEditor from './components/TemplateEditor';
+import GenerationButtons from './components/GenerationButtons';
+import EmailPreview from './components/EmailPreview';
 
-const App = () => {
+function App() {
+
   const [csvData, setCsvData] = useState([]);
   const [headers, setHeaders] = useState([]);
-  const [emailTemplate, setEmailTemplate] = useState("");
   const [generatedEmails, setGeneratedEmails] = useState([]);
+  const [templates, setTemplates] = useState([
+    { id: 1, name: 'Greetings', content: 'Greetings {{name}}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.'}
+  ]);
+  const [selectedTemplateId, setSelectedTemplateId] = useState(1);
+  const [recipients, setRecipients] = useState([]);
+  const [previewRecipient, setPreviewRecipient] = useState({});
+  const [nextTemplateId, setNextTemplateId] = useState(2);
+  const selectedTemplate = templates.find((template) => template.id === selectedTemplateId);
+
+  const generateEmailsContent = () => {
+    return recipients.map((recipient) => {
+      let replacedContent = selectedTemplate ? selectedTemplate.content : '';
+      Object.keys(recipient).forEach((csvColumn) => {
+        const placeholder = `{{${csvColumn}}}`;
+        replacedContent = replacedContent.replace(new RegExp(placeholder, 'g'), recipient[csvColumn]);
+      });
+      return { email: recipient.email, content: replacedContent };
+    });
+  };
+
+  const viewEmailsInNewTabs = () => {
+    const emails = generateEmailsContent();
+  };
+
+  const downloadAsTxt = () => {
+    const emails = generateEmailsContent();
+  };
+
+  const downloadAsPdf = () => {
+    const emails = generateEmailsContent();
+  };
 
   const handleDataParsed = ({ data, headers }) => {
     setCsvData(data);
+    setRecipients(data)
     setHeaders(headers);
     setGeneratedEmails([]);
     console.log("Parsed Data: ", data);
     console.log("Headers: ", headers);
   };
 
-  const handleTemplateChange = (event) => {
-    setEmailTemplate(event);
-  };
-
-  const generateEmails = () => {
-    if (!emailTemplate || csvData.length === 0) {
-      alert("Please upload a valid CSV file and create an email template.");
-      return;
-    }
-
-    // Replace `{variable}` with `{{variable}}` for Handlebars
-    const normalizedTemplate = emailTemplate.replace(/\{(\w+)\}/g, "{{$1}}");
-    const template = Handlebars.compile(normalizedTemplate);
-    const emails = csvData.map((row) => template(row));
-    setGeneratedEmails(emails);
+  const handleAddTemplate = () => {
+    const newTemplate = {
+      id: Date.now(),
+      name: `New Template ${templates.length + 1}`,
+      content: 'Your new template here...',
+    };
+    setTemplates([...templates, newTemplate]);
+    setSelectedTemplateId(newTemplate.id);
+    setNextTemplateId(nextTemplateId + 1);
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>PAW MailMerge</h1>
-      <CSVUploader onDataParsed={handleDataParsed} />
-      <EmailTemplateEditor
-        headers={headers}
-        onTemplateChange={handleTemplateChange}
-      />
-      <button onClick={generateEmails}>Generate Emails</button>
-      <EmailPreviewer generatedEmails={generatedEmails} />
-      {generatedEmails.length > 0 && (
-        <DownloadEmails generatedEmails={generatedEmails} />
-      )}
+    
+    <div className="App">
+      <Header></Header>
+      <FileUpload onDataParsed={handleDataParsed}></FileUpload>
+      <TemplatesList templates={templates} selectedTemplateId={selectedTemplateId} onSelectTemplate={setSelectedTemplateId} onAddTemplate={handleAddTemplate}></TemplatesList>
+      <TemplateEditor headers={headers} template={selectedTemplate} onTemplateChange={
+        (newContent)=>{
+          if (selectedTemplate) {
+            setTemplates(templates.map(template =>
+              template.id === selectedTemplateId
+                ? { ...template, content: newContent }
+                : template
+            ));
+          }
+        }
+      }></TemplateEditor>
+      <RecipientsList recipients={recipients} onSelectRecipient={setPreviewRecipient}></RecipientsList>
+      <EmailPreview template={selectedTemplate} recipient={previewRecipient}></EmailPreview>
+      <GenerationButtons
+                onViewEmailsInNewTabs={viewEmailsInNewTabs}
+                onDownloadAsTxt={downloadAsTxt}
+                onDownloadAsPdf={downloadAsPdf}></GenerationButtons>
+      <Footer></Footer>
     </div>
   );
-};
+}
 
 export default App;
