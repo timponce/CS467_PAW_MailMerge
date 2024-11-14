@@ -183,3 +183,72 @@ button {
 button:hover {
   background-color: #c36800;
 }
+
+.instructions-page {
+  background-color: #D97A0E;
+  color: white;
+  border-radius: 20px;
+  width: 80%;
+  max-width: 1100px;
+  padding: 20px;
+  margin: 20px auto;
+  font-size: 16px;
+}
+
+.instructions-page h2 {
+  color: black;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  display: inline-block;
+  border: 2px solid #D97A0E;
+}
+
+.instructions-page ol {
+  list-style: decimal inside;
+  margin-left: 20px;
+}
+
+.instructions-page li {
+  margin-bottom: 10px;
+}
+
+.back-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-button {
+  background-color: #D97A0E;
+  color: black;
+  font-weight: bold;
+  border: 2px solid black;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #c36800;
+}
+
+.App-header {
+  background-color: #D97A0E;
+  width: 80%;
+  max-width: 1100px;
+  padding: 20px;
+  text-align: center;
+  color: black;
+  border-radius: 20px;
+  margin: 20px 0;
+  position: relative;
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 48px;
+}
