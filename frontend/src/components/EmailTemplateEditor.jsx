@@ -32,7 +32,7 @@ const EmailTemplateEditor = ({ headers, onTemplateChange }) => {
       <textarea
         rows={5}
         cols={50}
-        placeholder="Type your email template here..., e.g., 'Hello {{firstName}} {{lastName}}, your amount due is {{amountDue}}.'"
+        placeholder="Type your email template here..., e.g., 'Hello {firstName} {lastName}, your amount due is {amountDue}.'"
         value={template}
         onChange={handleTemplateChange}
       />
