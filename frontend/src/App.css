@@ -1,42 +1,3 @@
-/* .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
 .App {
   display: flex;
   flex-direction: column;
@@ -182,4 +143,132 @@ button {
 
 button:hover {
   background-color: #c36800;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  align-items: flex-start; 
+  width: 80%; 
+  max-width: 1100px; 
+  margin: 0 auto; 
+  padding: 20px;
+}
+
+.editor-and-preview {
+  flex: 2; 
+  min-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+}
+
+.recipients-list {
+  flex: 1; 
+  max-width: 200px;
+  overflow-y: auto;
+  border-left: 1px solid #ccc;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.recipients-list h3 {
+  text-align: center;
+}
+
+.recipients-list li {
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  word-break: break-word;
+}
+
+.recipients-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.recipients-list li.selected {
+  background: linear-gradient(to right,#D97A0E, #FF7A00);
+  color: white;
+  font-weight: bold;
+}
+
+.recipients-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.templates-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.templates-heading {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.editable-name-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.editable-name-input {
+  width: 200px;
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.dropdown-toggle-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.custom-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  width: 200px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.dropdown-option {
+  padding: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dropdown-option:hover {
+  background-color: #f0f0f0;
+}
+
+.add-template-button {
+  background-color: #D97A0E;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
 }
