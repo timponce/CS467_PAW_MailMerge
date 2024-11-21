@@ -12,7 +12,6 @@ export default function FileUpload({ onDataParsed }) {
       parseCSV(file);
     } else {
       setErrors(["Please upload a valid CSV file."]);
-      console.error(errors);
     }
   };
 
@@ -28,7 +27,6 @@ export default function FileUpload({ onDataParsed }) {
       },
       error: (error) => {
         setErrors([`Error parsing CSV: ${error.message}`]);
-        console.error(errors);
       },
     });
   };
