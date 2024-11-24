@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,11 +11,14 @@ import TemplatesList from "./components/TemplatesList";
 import TemplateEditor from "./components/TemplateEditor";
 import GenerationButtons from "./components/GenerationButtons";
 import EmailPreview from "./components/EmailPreview";
+import InstructionsPage from "./components/InstructionsPage";
 
 function App() {
+  const location = useLocation();
   const [csvData, setCsvData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [generatedEmails, setGeneratedEmails] = useState([]);
+
   const [templates, setTemplates] = useState(() => {
     const savedTemplates = localStorage.getItem("templates");
     return savedTemplates ? JSON.parse(savedTemplates) : [];
@@ -113,7 +117,7 @@ function App() {
     doc.save("generated_emails.pdf");
   };
 
-  const handleDataParsed = ({ data, headers }) => {
+  const handleDataParsed = ({ data, headers}) => {
     setCsvData(data);
     setRecipients(data);
     setHeaders(headers);
@@ -132,46 +136,63 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Header></Header>
-      <FileUpload onDataParsed={handleDataParsed}></FileUpload>
-      <TemplatesList
-        templates={templates}
-        selectedTemplateId={selectedTemplateId}
-        onSelectTemplate={setSelectedTemplateId}
-        onAddTemplate={handleAddTemplate}
-      ></TemplatesList>
-      <TemplateEditor
-        headers={headers}
-        template={selectedTemplate}
-        onTemplateChange={(newContent) => {
-          if (selectedTemplate) {
-            setTemplates(
-              templates.map((template) =>
-                template.id === selectedTemplateId
-                  ? { ...template, content: newContent }
-                  : template
-              )
-            );
-          }
-        }}
-      ></TemplateEditor>
-      <RecipientsList
-        recipients={recipients}
-        onSelectRecipient={setPreviewRecipient}
-      ></RecipientsList>
-      <EmailPreview
-        template={selectedTemplate}
-        recipient={previewRecipient}
-      ></EmailPreview>
-      <GenerationButtons
-        onViewEmailsInNewTabs={viewEmailsInNewTabs}
-        onDownloadAsTxt={downloadAsTxt}
-        onDownloadAsPdf={downloadAsPdf}
-      ></GenerationButtons>
-      <Footer></Footer>
-    </div>
+        <div className="App">
+            <Header />
+            <Routes>
+                <Route path="/" element={
+                    <>
+                        <FileUpload onDataParsed={handleDataParsed} />
+                        <TemplatesList
+                            templates={templates}
+                            selectedTemplateId={selectedTemplateId}
+                            onSelectTemplate={setSelectedTemplateId}
+                            onAddTemplate={handleAddTemplate}
+                        />
+                        <TemplateEditor
+                            headers={headers}
+                            template={selectedTemplate}
+                            onTemplateChange={(newContent) => {
+                                if (selectedTemplate) {
+                                    setTemplates(
+                                        templates.map((template) =>
+                                            template.id === selectedTemplateId
+                                                ? { ...template, content: newContent }
+                                                : template
+                                        )
+                                    );
+                                }
+                            }}
+                        />
+                        <RecipientsList
+                            recipients={recipients}
+                            onSelectRecipient={setPreviewRecipient}
+                        />
+                        <EmailPreview
+                            template={selectedTemplate}
+                            recipient={previewRecipient}
+                        />
+                        <GenerationButtons
+                            onViewEmailsInNewTabs={viewEmailsInNewTabs}
+                            onDownloadAsTxt={downloadAsTxt}
+                            onDownloadAsPdf={downloadAsPdf}
+                        />
+                    </>
+                } />
+
+                <Route path="/instructions" element={<InstructionsPage />} />
+            </Routes>
+
+            <Footer />
+        </div>
+);
+}
+
+function AppWrapper() {
+  return (
+      <Router>
+          <App />
+      </Router>
   );
 }
 
-export default App;
+export default AppWrapper;
