@@ -1,42 +1,3 @@
-/* .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
 .App {
   display: flex;
   flex-direction: column;
@@ -45,7 +6,7 @@
 }
 
 header {
-  background-color: #D97A0E;
+  background-color: #d97a0e;
   width: 80%;
   max-width: 1100px;
   padding: 10px;
@@ -65,7 +26,6 @@ header p {
   margin-top: 3px;
   font-weight: bold;
 }
-
 
 .file-upload {
   display: flex;
@@ -106,11 +66,11 @@ header p {
   margin-left: 30px;
   font-size: 16px;
   font-weight: bold;
-  
 }
 
-.email-preview, .template-editor {
-  background-color: #D97A0E;
+.email-preview,
+.template-editor {
+  background-color: #d97a0e;
   color: white;
   border-radius: 20px;
   width: 80%;
@@ -119,7 +79,8 @@ header p {
   margin: 20px 0;
 }
 
-.email-preview h3, .template-editor h3 {
+.email-preview h3,
+.template-editor h3 {
   background-color: white;
   color: black;
   padding: 10px 20px;
@@ -129,7 +90,7 @@ header p {
   font-size: medium;
   margin-bottom: 15px;
   margin-top: 0px;
-  border: 2px solid #D97A0E;
+  border: 2px solid #d97a0e;
 }
 
 .email-preview-text {
@@ -143,7 +104,6 @@ header p {
   overflow-y: auto;
   white-space: pre-wrap;
 }
-
 
 .template-editor-text {
   width: 100%;
@@ -170,7 +130,7 @@ header p {
 }
 
 button {
-  background-color: #D97A0E;
+  background-color: #d97a0e;
   color: black;
   border: none;
   padding: 10px 20px;
@@ -184,8 +144,137 @@ button:hover {
   background-color: #c36800;
 }
 
+.main-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  width: 80%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.editor-and-preview {
+  flex: 2;
+  min-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.recipients-list {
+  flex: 1;
+  max-width: 200px;
+  overflow-y: auto;
+  border-left: 1px solid #ccc;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.recipients-list h3 {
+  text-align: center;
+}
+
+.recipients-list li {
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  word-break: break-word;
+}
+
+.recipients-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.recipients-list li.selected {
+  background: linear-gradient(to right, #d97a0e, #ff7a00);
+  color: white;
+  font-weight: bold;
+}
+
+.recipients-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.templates-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.templates-heading {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.editable-name-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.editable-name-input {
+  width: 200px;
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.dropdown-toggle-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.custom-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  width: 200px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.dropdown-option {
+  padding: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dropdown-option:hover {
+  background-color: #f0f0f0;
+}
+
+.add-template-button {
+  background-color: #d97a0e;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  width: 200px;
+}
+
 .instructions-page {
-  background-color: #D97A0E;
+  background-color: #d97a0e;
   color: white;
   border-radius: 20px;
   width: 80%;
@@ -202,7 +291,7 @@ button:hover {
   border-radius: 10px;
   font-weight: bold;
   display: inline-block;
-  border: 2px solid #D97A0E;
+  border: 2px solid #d97a0e;
 }
 
 .instructions-page ol {
@@ -220,7 +309,7 @@ button:hover {
 }
 
 .back-button {
-  background-color: #D97A0E;
+  background-color: #d97a0e;
   color: black;
   font-weight: bold;
   border: 2px solid black;
@@ -237,7 +326,7 @@ button:hover {
 }
 
 .App-header {
-  background-color: #D97A0E;
+  background-color: #d97a0e;
   width: 80%;
   max-width: 1100px;
   padding: 20px;

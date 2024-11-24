@@ -1,12 +1,12 @@
 import React from "react";
 
-export default function RecipientsList({ recipients, onSelectRecipient }) {
+export default function RecipientsList({ recipients, onSelectRecipient, selectedRecipient }) {
     if (!recipients || recipients.length === 0) {
-        return <p>No recipients available</p>; // Show a message if there are no recipients
+        return <p>No recipients available</p>;
       }
       
     return (
-        <div>
+        <div className="recipients-list">
             <h3>Recipients</h3>
             <ul>
                 {recipients.map((recipient, index) => (
@@ -14,8 +14,9 @@ export default function RecipientsList({ recipients, onSelectRecipient }) {
                         key={index}
                         onClick={() => onSelectRecipient(recipient)}
                         style={{ cursor: 'pointer', marginBottom: '8px' }}
+                        className={recipient === selectedRecipient ? "selected" : ""}
                     >
-                        {recipient.email}
+                        {`Recipient ${index + 1}${(recipient.name || recipient.email) ? ` - ${recipient.name || recipient.email}` : ''}`}
                     </li>
                 ))}
             </ul>
