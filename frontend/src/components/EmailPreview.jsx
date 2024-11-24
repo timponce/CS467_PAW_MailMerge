@@ -9,7 +9,7 @@ export default function EmailPreview({ template, recipient }) {
 
     let preview = template.content;
     Object.keys(recipient).forEach((csvColumn) => {
-      const placeholder = `{{${csvColumn}}}`;
+      const placeholder = `{${csvColumn}}`;
       preview = preview.replace(new RegExp(placeholder, 'g'), recipient[csvColumn]);
     });
     return preview;

@@ -23,7 +23,7 @@ function App() {
       id: 1,
       name: "Greetings",
       content:
-        "Greetings {{name}}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
+        "Greetings {name}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
     },
   ]);
   const [selectedTemplateId, setSelectedTemplateId] = useState(1);
