@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -15,14 +15,10 @@ function App() {
   const [csvData, setCsvData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [generatedEmails, setGeneratedEmails] = useState([]);
-  const [templates, setTemplates] = useState([
-    {
-      id: 1,
-      name: "Greetings",
-      content:
-        "Greetings {{name}}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
-    },
-  ]);
+  const [templates, setTemplates] = useState(() => {
+    const savedTemplates = localStorage.getItem("templates");
+    return savedTemplates ? JSON.parse(savedTemplates) : [];
+  });
   const [selectedTemplateId, setSelectedTemplateId] = useState(1);
   const [recipients, setRecipients] = useState([]);
   const [previewRecipient, setPreviewRecipient] = useState({});
@@ -30,6 +26,35 @@ function App() {
   const selectedTemplate = templates.find(
     (template) => template.id === selectedTemplateId
   );
+
+  useEffect(() => {
+    localStorage.setItem("templates", JSON.stringify(templates));
+  }, [templates]);
+
+  useEffect(() => {
+    const savedTemplates = localStorage.getItem("templates");
+    if (savedTemplates) {
+      const parsedTemplates = JSON.parse(savedTemplates);
+      setTemplates(parsedTemplates);
+      if (parsedTemplates.length > 0) {
+        setSelectedTemplateId(parsedTemplates[0].id);
+        const maxId = Math.max(
+          ...parsedTemplates.map((template) => template.id)
+        );
+        setNextTemplateId(maxId + 1);
+      }
+    } else {
+      const defaultTemplate = {
+        id: 1,
+        name: "Greetings",
+        content:
+          "Greetings {{name}}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
+      };
+      setTemplates([defaultTemplate]);
+      setSelectedTemplateId(1);
+      setNextTemplateId(2);
+    }
+  }, []);
 
   const generateEmailsContent = () => {
     const emails = recipients.map((recipient) => {
