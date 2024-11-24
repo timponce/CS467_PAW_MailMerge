@@ -20,19 +20,20 @@ function App() {
   const [generatedEmails, setGeneratedEmails] = useState([]);
   const [templates, setTemplates] = useState([
     {
-      id: 1,
+      id: Date.now(),
       name: "Greetings",
       content:
         "Greetings {name}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
     },
   ]);
-  const [selectedTemplateId, setSelectedTemplateId] = useState(1);
+  const [selectedTemplateId, setSelectedTemplateId] = useState(templates[0].id);
   const [recipients, setRecipients] = useState([]);
   const [previewRecipient, setPreviewRecipient] = useState({});
-  const [nextTemplateId, setNextTemplateId] = useState(2);
   const selectedTemplate = templates.find(
     (template) => template.id === selectedTemplateId
   );
+  const [editableName, setEditableName] = useState(templates[0].name);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const generateEmailsContent = () => {
     const emails = recipients.map((recipient) => {
@@ -96,6 +97,7 @@ function App() {
     setRecipients(data);
     setHeaders(headers);
     setGeneratedEmails([]);
+    setPreviewRecipient(data.length > 0 ?  data[0] : {})
   };
 
   const handleAddTemplate = () => {
@@ -106,50 +108,71 @@ function App() {
     };
     setTemplates([...templates, newTemplate]);
     setSelectedTemplateId(newTemplate.id);
-    setNextTemplateId(nextTemplateId + 1);
+    setEditableName(newTemplate.name);
+    setIsDropdownOpen(false);
+  };
+
+  const handleEditableNameChange = (newName) => {
+    setEditableName(newName);
+    const updatedTemplates = templates.map((template) =>
+      template.id === selectedTemplateId
+        ? { ...template, name: newName }
+        : template
+    );
+    setTemplates(updatedTemplates);
   };
 
   return (
+
         <div className="App">
             <Header />
             <Routes>
                 <Route path="/" element={
                     <>
-                        <FileUpload onDataParsed={handleDataParsed} />
-                        <TemplatesList
-                            templates={templates}
-                            selectedTemplateId={selectedTemplateId}
-                            onSelectTemplate={setSelectedTemplateId}
-                            onAddTemplate={handleAddTemplate}
-                        />
-                        <TemplateEditor
-                            headers={headers}
-                            template={selectedTemplate}
-                            onTemplateChange={(newContent) => {
-                                if (selectedTemplate) {
-                                    setTemplates(
-                                        templates.map((template) =>
-                                            template.id === selectedTemplateId
-                                                ? { ...template, content: newContent }
-                                                : template
-                                        )
-                                    );
-                                }
-                            }}
-                        />
-                        <RecipientsList
-                            recipients={recipients}
-                            onSelectRecipient={setPreviewRecipient}
-                        />
-                        <EmailPreview
-                            template={selectedTemplate}
-                            recipient={previewRecipient}
-                        />
-                        <GenerationButtons
-                            onViewEmailsInNewTabs={viewEmailsInNewTabs}
-                            onDownloadAsTxt={downloadAsTxt}
-                            onDownloadAsPdf={downloadAsPdf}
-                        />
+                                        <FileUpload onDataParsed={handleDataParsed}></FileUpload>
+                      <TemplatesList
+                        templates={templates}
+                        selectedTemplateId={selectedTemplateId}
+                        onSelectTemplate={setSelectedTemplateId}
+                        onAddTemplate={handleAddTemplate}
+                        editableName={editableName}
+                        isDropdownOpen={isDropdownOpen}
+                        onEditableNameChange={handleEditableNameChange}
+                        setIsDropdownOpen={setIsDropdownOpen}
+                      ></TemplatesList>
+                      <div className="main-content">
+                      <div className="editor-and-preview">
+                      <TemplateEditor
+                        headers={headers}
+                        template={selectedTemplate}
+                        onTemplateChange={(newContent) => {
+                          if (selectedTemplate) {
+                            setTemplates(
+                              templates.map((template) =>
+                                template.id === selectedTemplateId
+                                  ? { ...template, content: newContent }
+                                  : template
+                              )
+                            );
+                          }
+                        }}
+                      ></TemplateEditor>
+                      <EmailPreview
+                        template={selectedTemplate}
+                        recipient={previewRecipient}
+                      ></EmailPreview>
+                      </div>
+                      <RecipientsList
+                        recipients={recipients}
+                        onSelectRecipient={setPreviewRecipient}
+                        selectedRecipient={previewRecipient}
+                      ></RecipientsList>
+                      </div>
+                      <GenerationButtons
+                        onViewEmailsInNewTabs={viewEmailsInNewTabs}
+                        onDownloadAsTxt={downloadAsTxt}
+                        onDownloadAsPdf={downloadAsPdf}
+                      ></GenerationButtons>
                     </>
                 } />
 
