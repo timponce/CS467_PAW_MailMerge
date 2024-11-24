@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,8 +11,10 @@ import TemplatesList from "./components/TemplatesList";
 import TemplateEditor from "./components/TemplateEditor";
 import GenerationButtons from "./components/GenerationButtons";
 import EmailPreview from "./components/EmailPreview";
+import InstructionsPage from "./components/InstructionsPage";
 
 function App() {
+  const location = useLocation();
   const [csvData, setCsvData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [generatedEmails, setGeneratedEmails] = useState([]);
@@ -20,7 +23,7 @@ function App() {
       id: Date.now(),
       name: "Greetings",
       content:
-        "Greetings {{name}}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
+        "Greetings {name}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
     },
   ]);
   const [selectedTemplateId, setSelectedTemplateId] = useState(templates[0].id);
@@ -89,7 +92,7 @@ function App() {
     doc.save("generated_emails.pdf");
   };
 
-  const handleDataParsed = ({ data, headers }) => {
+  const handleDataParsed = ({ data, headers}) => {
     setCsvData(data);
     setRecipients(data);
     setHeaders(headers);
@@ -120,55 +123,73 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Header></Header>
-      <FileUpload onDataParsed={handleDataParsed}></FileUpload>
-      <TemplatesList
-        templates={templates}
-        selectedTemplateId={selectedTemplateId}
-        onSelectTemplate={setSelectedTemplateId}
-        onAddTemplate={handleAddTemplate}
-        editableName={editableName}
-        isDropdownOpen={isDropdownOpen}
-        onEditableNameChange={handleEditableNameChange}
-        setIsDropdownOpen={setIsDropdownOpen}
-      ></TemplatesList>
-      <div className="main-content">
-      <div className="editor-and-preview">
-      <TemplateEditor
-        headers={headers}
-        template={selectedTemplate}
-        onTemplateChange={(newContent) => {
-          if (selectedTemplate) {
-            setTemplates(
-              templates.map((template) =>
-                template.id === selectedTemplateId
-                  ? { ...template, content: newContent }
-                  : template
-              )
-            );
-          }
-        }}
-      ></TemplateEditor>
-      <EmailPreview
-        template={selectedTemplate}
-        recipient={previewRecipient}
-      ></EmailPreview>
-      </div>
-      <RecipientsList
-        recipients={recipients}
-        onSelectRecipient={setPreviewRecipient}
-        selectedRecipient={previewRecipient}
-      ></RecipientsList>
-      </div>
-      <GenerationButtons
-        onViewEmailsInNewTabs={viewEmailsInNewTabs}
-        onDownloadAsTxt={downloadAsTxt}
-        onDownloadAsPdf={downloadAsPdf}
-      ></GenerationButtons>
-      <Footer></Footer>
-    </div>
+
+        <div className="App">
+            <Header />
+            <Routes>
+                <Route path="/" element={
+                    <>
+                                        <FileUpload onDataParsed={handleDataParsed}></FileUpload>
+                      <TemplatesList
+                        templates={templates}
+                        selectedTemplateId={selectedTemplateId}
+                        onSelectTemplate={setSelectedTemplateId}
+                        onAddTemplate={handleAddTemplate}
+                        editableName={editableName}
+                        isDropdownOpen={isDropdownOpen}
+                        onEditableNameChange={handleEditableNameChange}
+                        setIsDropdownOpen={setIsDropdownOpen}
+                      ></TemplatesList>
+                      <div className="main-content">
+                      <div className="editor-and-preview">
+                      <TemplateEditor
+                        headers={headers}
+                        template={selectedTemplate}
+                        onTemplateChange={(newContent) => {
+                          if (selectedTemplate) {
+                            setTemplates(
+                              templates.map((template) =>
+                                template.id === selectedTemplateId
+                                  ? { ...template, content: newContent }
+                                  : template
+                              )
+                            );
+                          }
+                        }}
+                      ></TemplateEditor>
+                      <EmailPreview
+                        template={selectedTemplate}
+                        recipient={previewRecipient}
+                      ></EmailPreview>
+                      </div>
+                      <RecipientsList
+                        recipients={recipients}
+                        onSelectRecipient={setPreviewRecipient}
+                        selectedRecipient={previewRecipient}
+                      ></RecipientsList>
+                      </div>
+                      <GenerationButtons
+                        onViewEmailsInNewTabs={viewEmailsInNewTabs}
+                        onDownloadAsTxt={downloadAsTxt}
+                        onDownloadAsPdf={downloadAsPdf}
+                      ></GenerationButtons>
+                    </>
+                } />
+
+                <Route path="/instructions" element={<InstructionsPage />} />
+            </Routes>
+
+            <Footer />
+        </div>
+);
+}
+
+function AppWrapper() {
+  return (
+      <Router>
+          <App />
+      </Router>
   );
 }
 
-export default App;
+export default AppWrapper;
