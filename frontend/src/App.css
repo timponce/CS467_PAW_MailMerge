@@ -214,6 +214,46 @@ button:hover {
   margin-bottom: 10px;
 }
 
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown-item.selected {
+  background: linear-gradient(to right, #d97a0e, #ff7a00);
+  color: white;
+  font-weight: bold;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f9f9f9;
+  border-color: #d97a0e;
+}
+
+.dropdown-item input {
+  flex: 1;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+}
+.dropdown-item input:hover {
+  border-color: #d97a0e;
+}
+
+.dropdown-item input:focus {
+  outline: none;
+  border-color: #d97a0e;
+}
+
 .editable-name-container {
   display: flex;
   align-items: center;
@@ -222,11 +262,19 @@ button:hover {
 }
 
 .editable-name-input {
+  flex: 1;
   width: 200px;
   padding: 8px;
   margin-right: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.editable-name-input:focus {
+  border-color: #d97a0e;
+  cursor: text;
 }
 
 .dropdown-toggle-button {

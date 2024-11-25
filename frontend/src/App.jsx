@@ -26,10 +26,35 @@ function App() {
   const [generatedEmails, setGeneratedEmails] = useState([]);
   const [nextTemplateId, setNextTemplateId] = useState(2);
   const [templates, setTemplates] = useState(() => {
-    const savedTemplates = localStorage.getItem("templates");
-    return savedTemplates ? JSON.parse(savedTemplates) : [];
+    try {
+      const savedTemplates = localStorage.getItem("templates");
+      const parsedTemplates = savedTemplates ? JSON.parse(savedTemplates) : [];
+      return Array.isArray(parsedTemplates) && parsedTemplates.length > 0
+        ? parsedTemplates
+        : [
+            {
+              id: 1,
+              name: "Greetings",
+              content:
+                "Greetings {name}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
+            },
+          ];
+    } catch {
+      return [
+        {
+          id: 1,
+          name: "Greetings",
+          content:
+            "Greetings {name}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
+        },
+      ];
+    }
   });
-  const [selectedTemplateId, setSelectedTemplateId] = useState(1);
+  const [selectedTemplateId, setSelectedTemplateId] = useState(() => {
+    const savedTemplates = localStorage.getItem("templates");
+    const parsedTemplates = savedTemplates ? JSON.parse(savedTemplates) : [];
+    return parsedTemplates.length > 0 ? parsedTemplates[0].id : 1;
+  });
 
   const [recipients, setRecipients] = useState([]);
   const [previewRecipient, setPreviewRecipient] = useState({});
@@ -60,7 +85,7 @@ function App() {
         id: 1,
         name: "Greetings",
         content:
-          "Greetings {{name}}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
+          "Greetings {name}, \nHope everything is going well.\nThe following email is to...\nI look forward to your answer.\nThanks.",
       };
       setTemplates([defaultTemplate]);
       setSelectedTemplateId(1);
@@ -145,14 +170,12 @@ function App() {
     setIsDropdownOpen(false);
   };
 
-  const handleEditableNameChange = (newName) => {
-    setEditableName(newName);
-    const updatedTemplates = templates.map((template) =>
-      template.id === selectedTemplateId
-        ? { ...template, name: newName }
-        : template
+  const handleEditableNameChange = (id, newName) => {
+    setTemplates((prevTemplates) =>
+      prevTemplates.map((template) =>
+        template.id === id ? { ...template, name: newName } : template
+      )
     );
-    setTemplates(updatedTemplates);
   };
 
   return (
