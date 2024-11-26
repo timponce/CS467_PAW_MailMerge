@@ -206,6 +206,8 @@ button:hover {
 .templates-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin: 20px;
 }
 
@@ -371,6 +373,45 @@ button:hover {
 
 .back-button:hover {
   background-color: #c36800;
+}
+
+.delete-template-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 12px;
+  border: none;
+  background-color: #ae2012;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-template-button:hover {
+  background-color: #bb3e33;
+}
+
+.delete-all-templates-button {
+  min-width: 150px;
+  margin-top: 10px;
+  padding: 20px 40px;
+  font-size: 14px;
+  text-align: center;
+  background-color: #ae2012;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-all-templates-button:hover {
+  background-color: #bb3e33;
+}
+
+.no-templates-message {
+  color: #777;
+  font-style: italic;
+  margin: 10px 0;
+  text-align: center;
 }
 
 .App-header {

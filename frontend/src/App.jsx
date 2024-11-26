@@ -61,7 +61,11 @@ function App() {
   const selectedTemplate = templates.find(
     (template) => template.id === selectedTemplateId
   );
-  const [editableName, setEditableName] = useState(templates[0].name);
+  const [editableName, setEditableName] = useState(() => {
+    const savedTemplates = localStorage.getItem("templates");
+    const parsedTemplates = savedTemplates ? JSON.parse(savedTemplates) : [];
+    return parsedTemplates.length > 0 ? parsedTemplates[0].name : "";
+  });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -178,6 +182,24 @@ function App() {
     );
   };
 
+  const handleDeleteTemplate = (id) => {
+    const updatedTemplates = templates.filter((template) => template.id !== id);
+    setTemplates(updatedTemplates);
+    if (selectedTemplateId === id && updatedTemplates.length > 0) {
+      setSelectedTemplateId(updatedTemplates[0].id);
+      setEditableName(updatedTemplates[0].name);
+    } else if (updatedTemplates.length === 0) {
+      setSelectedTemplateId(null);
+      setEditableName("");
+    }
+  };
+
+  const handleDeleteAllTemplates = () => {
+    setTemplates([]);
+    setSelectedTemplateId(null);
+    setEditableName("");
+  };
+
   return (
     <div className="App">
       <Header />
@@ -194,14 +216,18 @@ function App() {
                 onAddTemplate={handleAddTemplate}
                 editableName={editableName}
                 isDropdownOpen={isDropdownOpen}
-                onEditableNameChange={handleEditableNameChange}
+                onEditableNameChange={(id, name) =>
+                  handleEditableNameChange(id, name)
+                }
                 setIsDropdownOpen={setIsDropdownOpen}
+                onDeleteTemplate={handleDeleteTemplate}
+                onDeleteAllTemplates={handleDeleteAllTemplates}
               ></TemplatesList>
               <div className="main-content">
                 <div className="editor-and-preview">
                   <TemplateEditor
                     headers={headers}
-                    template={selectedTemplate}
+                    template={selectedTemplate || { content: "" }}
                     onTemplateChange={(newContent) => {
                       if (selectedTemplate) {
                         setTemplates(
