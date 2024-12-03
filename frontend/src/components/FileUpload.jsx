@@ -12,6 +12,7 @@ export default function FileUpload({ onDataParsed }) {
       parseCSV(file);
     } else {
       setErrors(["Please upload a valid CSV file."]);
+      console.error(errors);
     }
   };
 
@@ -27,17 +28,23 @@ export default function FileUpload({ onDataParsed }) {
       },
       error: (error) => {
         setErrors([`Error parsing CSV: ${error.message}`]);
+        console.error(errors);
       },
     });
   };
 
   return (
     <div className="file-upload">
-      <label className="file-upload-label" htmlFor="file-upload-real" tabIndex={0} onKeyDown={(e) => {
+      <label
+        className="file-upload-label"
+        htmlFor="file-upload-real"
+        tabIndex={0}
+        onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             document.getElementById("file-upload-real").click();
           }
-        }}>
+        }}
+      >
         Upload CSV
       </label>
       <input

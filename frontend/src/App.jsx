@@ -1,13 +1,6 @@
-import logo from "./logo.svg";
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -20,11 +13,7 @@ import EmailPreview from "./components/EmailPreview";
 import InstructionsPage from "./components/InstructionsPage";
 
 function App() {
-  const location = useLocation();
-  const [csvData, setCsvData] = useState([]);
   const [headers, setHeaders] = useState([]);
-  const [generatedEmails, setGeneratedEmails] = useState([]);
-  const [nextTemplateId, setNextTemplateId] = useState(2);
   const [templates, setTemplates] = useState(() => {
     try {
       const savedTemplates = localStorage.getItem("templates");
@@ -79,10 +68,6 @@ function App() {
       setTemplates(parsedTemplates);
       if (parsedTemplates.length > 0) {
         setSelectedTemplateId(parsedTemplates[0].id);
-        const maxId = Math.max(
-          ...parsedTemplates.map((template) => template.id)
-        );
-        setNextTemplateId(maxId + 1);
       }
     } else {
       const defaultTemplate = {
@@ -93,7 +78,6 @@ function App() {
       };
       setTemplates([defaultTemplate]);
       setSelectedTemplateId(1);
-      setNextTemplateId(2);
     }
   }, []);
 
@@ -109,7 +93,6 @@ function App() {
       });
       return { email: recipient.email, content: replacedContent };
     });
-    setGeneratedEmails(emails);
     return emails;
   };
 
@@ -155,10 +138,8 @@ function App() {
   };
 
   const handleDataParsed = ({ data, headers }) => {
-    setCsvData(data);
     setRecipients(data);
     setHeaders(headers);
-    setGeneratedEmails([]);
     setPreviewRecipient(data.length > 0 ? data[0] : {});
   };
 
